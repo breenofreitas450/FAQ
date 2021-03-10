@@ -26,7 +26,9 @@ app.use(bodyParser.json());
 //ROTAS
 app.get("/", function(req,resp){
     // Select ALL From ou equivalente a estrutura de tabela criada nesse metodo
-    Pergunta.findAll({raw: true}).then(perguntas => {
+    Pergunta.findAll({raw: true, order:[
+        ['id','DESC'] // Order By
+    ]}).then(perguntas => {
         resp.render("index",{
             perguntas:perguntas
         });
