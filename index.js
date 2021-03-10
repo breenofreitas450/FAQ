@@ -1,8 +1,11 @@
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./databases/databases");
-const perguntaModel = require("./databases/Pergunta");
+const pergunta = require("./databases/Pergunta");
+const Pergunta = require("./databases/Pergunta");
+
 //Conexão com o Banco
 connection
     .authenticate()
@@ -22,7 +25,12 @@ app.use(bodyParser.json());
 
 //ROTAS
 app.get("/", function(req,resp){
-    resp.render("index");
+    // Select ALL From ou equivalente a estrutura de tabela criada nesse metodo
+    Pergunta.findAll({raw: true}).then(perguntas => {
+        resp.render("index",{
+            perguntas:perguntas
+        });
+    });
 });
 
 app.get("/perguntar", function(req,resp){
@@ -32,7 +40,12 @@ app.get("/perguntar", function(req,resp){
 app.post("/salvarpergunta", (req,resp) =>{
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    resp.send("Formulario recebido! Titulo: " + titulo + " " + "Descricao: " + descricao);
+    pergunta.create({
+        titulo: titulo, 
+        descricao: descricao
+    }).then(() =>{
+        resp.redirect('/');
+    })
 });
 
 
