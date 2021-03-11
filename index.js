@@ -24,22 +24,22 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 //ROTAS
-app.get("/", function(req,resp){
+app.get("/", function(req,res){
     // Select ALL From ou equivalente a estrutura de tabela criada nesse metodo
     Pergunta.findAll({raw: true, order:[
         ['id','DESC'] // Order By
     ]}).then(perguntas => {
-        resp.render("index",{
+        res.render("index",{
             perguntas:perguntas
         });
     });
 });
 
-app.get("/perguntar", function(req,resp){
-    resp.render("perguntar");
+app.get("/perguntar", function(req,res){
+    res.render("perguntar");
 });
 
-app.post("/salvarpergunta", (req,resp) =>{
+app.post("/salvarpergunta", (req,res) =>{
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
     pergunta.create({
@@ -48,6 +48,20 @@ app.post("/salvarpergunta", (req,resp) =>{
     }).then(() =>{
         resp.redirect('/');
     })
+});
+
+app.get("/pergunta/:id", function(req,res){
+    var id = req.params.id;
+    Pergunta.findOne({
+        where: {id:id}
+    }).then(perguntas => {
+        if(pergunta != undefined){
+            res.render("pergunta");
+        }else{
+            resp.redirect("/");
+        }
+       
+    });
 });
 
 
