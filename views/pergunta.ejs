@@ -7,6 +7,24 @@
         <br>
         <h7><%= pergunta.descricao %></h1>
         <hr>
+        <form method="POST" action="/responderpergunta">
+            <h3>Responda</h3>
+            <label>Resposta:</label>
+            <textarea placeholder="Digite sua Resposta" class ="form-control" name="corpo"></textarea>
+            <br>
+            <input type="hidden" name="pergunta" value="<%= pergunta.id %>">
+            <button type="submit" class="btn btn-dark">Responder</button>
+        </form>
+        <hr>
+        <h3>Respostas:</h3>
+        <hr>
+        <% resposta.forEach(resposta => {%>
+            <div class="card">
+                <div class="card-body">
+                    <p><%= resposta.corpo %></p>
+                </div>
+            </div>
+        <% }) %>
     </div>
 
 </body>
